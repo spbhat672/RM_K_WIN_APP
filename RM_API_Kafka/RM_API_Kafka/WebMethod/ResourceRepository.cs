@@ -16,7 +16,7 @@ namespace RM_API_Kafka.WebMethod
         #region Get Resource Information for 3ds client
         public static List<Resource3DXWithValue> GetResourceInfoFor3ds(ResourceGetRequestModel model)
         {
-            string connectionStr = @"Data Source=LP5-SBT25-IND\MSSQLSERVER01;Initial Catalog=RM_K_DB_V2;Integrated Security=True";
+            string connectionStr = @"Data Source=LP5-SBT25-IND\MSSQLSERVER01;Initial Catalog=RM_K_DB_V2.1;Integrated Security=True";
             List<Resource3DXWithValue> resourceList = new List<Resource3DXWithValue>();
             string filter = " where ";
             List<string> filterValue = new List<string>();
@@ -100,28 +100,28 @@ namespace RM_API_Kafka.WebMethod
                         if(loopCount == 0)
                         {
                             cmd.CommandType = CommandType.Text;
-                            cmd.CommandText = "Insert into [RM_K_DB_V2].[dbo].[ResourceTable](Id,Name,Type,TypeId,CreationDate) Values("
+                            cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[ResourceTable](Id,Name,Type,TypeId,CreationDate) Values("
                                + model.ResourceId + ",'" + model.Name + "','" + model.Type + "'," + model.TypeId + ",'" + model.TagCreationDate + "')";
                             cmd.ExecuteNonQuery();
                             loopCount++;
                         }
 
-                        cmd.CommandText = "SELECT TOP 1 Id FROM [RM_K_DB_V2].[dbo].[ResourceTable] ORDER BY ID DESC";
+                        cmd.CommandText = "SELECT TOP 1 Id FROM [RM_K_DB_V2.1].[dbo].[ResourceTable] ORDER BY ID DESC";
                         long lastResourceId = (long)cmd.ExecuteScalar();
 
-                        cmd.CommandText = "select Count(*) from  [RM_K_DB_V2].[dbo].[ResourceAndTagRegistrationTable]";
+                        cmd.CommandText = "select Count(*) from  [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable]";
                         var tagCount = cmd.ExecuteScalar();
                         long tagId = Convert.ToInt64(tagCount) + 1;
 
-                        cmd.CommandText = "Insert into [RM_K_DB_V2].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) Values(" + tagId + ",'"
+                        cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) Values(" + tagId + ",'"
                             + model.TagName + "','" + model.TagValue + "','" + model.TagUOM + "','" + model.TagCreationDate + "'," + lastResourceId + ")";
                         cmd.ExecuteNonQuery();
 
-                        cmd.CommandText = "SELECT TOP 1 Id FROM [RM_K_DB_V2].[dbo].[TagTable] ORDER BY ID DESC";
+                        cmd.CommandText = "SELECT TOP 1 Id FROM [RM_K_DB_V2.1].[dbo].[TagTable] ORDER BY ID DESC";
                         long lastTagId = (long)cmd.ExecuteScalar();
 
-                        cmd.CommandText = "Insert into [RM_K_DB_V2].[dbo].[ResourceAndTagRegistrationTable](TypeName,TypeId,TagName,TagId,TagUOM) Values('"
-                            + model.Type + "'," + model.TypeId + ",'" + model.TagName + "'," + lastTagId + ",'" + model.TagUOM + "')";
+                        cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable](TypeName,TypeId,TagName,ResourceId,TagUOM) Values('"
+                            + model.Type + "'," + model.TypeId + ",'" + model.TagName + "'," + model.ResourceId + ",'" + model.TagUOM + "')";
                         cmd.ExecuteNonQuery();
 
                         cmd.CommandText = "SELECT TOP 1 Id FROM [3DX_RMkafkaDB].[dbo].[ResourceTable] ORDER BY ID DESC";
@@ -147,9 +147,8 @@ namespace RM_API_Kafka.WebMethod
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "Select tag.ResourceId,r.Name,r.TypeId,r.Type,tag.Id as TagId,tag.Name as TagName,tag.Value as TagValue,tag.UOM as TagUOM,tag.CreationDate as TagCreationDate" +
-                                      " from [RM_K_DB_V2].[dbo].[ResourceTable] r left join [RM_K_DB_V2].[dbo].[ResourceAndTagRegistrationTable] reg " +
-                                      "on r.TypeId = reg.TypeId " +
-                                      "left join [RM_K_DB_V2].[dbo].[TagTable] tag on reg.TagId = tag.Id ";
+                                      " from [RM_K_DB_V2.1].[dbo].[ResourceTable] r" +
+                                      " left join [RM_K_DB_V2.1].[dbo].[TagTable] tag on r.Id = tag.ResourceId ";
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -198,7 +197,7 @@ namespace RM_API_Kafka.WebMethod
                     foreach(ResourceWithValue model in resList)
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "Update [RM_K_DB_V2].[dbo].[TagTable] set Value = '" + model.TagValue + "' ,CreationDate = '" + model.TagCreationDate +
+                        cmd.CommandText = "Update [RM_K_DB_V2.1].[dbo].[TagTable] set Value = '" + model.TagValue + "' ,CreationDate = '" + model.TagCreationDate +
                              "' where Id = " + model.TagId + "";
                         cmd.ExecuteNonQuery();
                     }                   
@@ -218,9 +217,9 @@ namespace RM_API_Kafka.WebMethod
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "Delete from [RM_K_DB_V2].[dbo].[TagTable] where Id = " + id + "";
+                    cmd.CommandText = "Delete from [RM_K_DB_V2.1].[dbo].[TagTable] where Id = " + id + "";
                     cmd.ExecuteNonQuery();
-                    cmd.CommandText = "Delete from [RM_K_DB_V2].[dbo].[ResourceAndTagRegistrationTable] where TagId = " + id + "";
+                    cmd.CommandText = "Delete from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable] where TagId = " + id + "";
                     cmd.ExecuteNonQuery();
                 }
                 con.Close();
@@ -240,7 +239,7 @@ namespace RM_API_Kafka.WebMethod
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "Select * from [RM_K_DB_V2].[dbo].[TypeTable]";
+                    cmd.CommandText = "Select * from [RM_K_DB_V2.1].[dbo].[TypeTable]";
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -276,7 +275,7 @@ namespace RM_API_Kafka.WebMethod
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "Select * from [RM_K_DB_V2].[dbo].[StatusTable]";
+                    cmd.CommandText = "Select * from [RM_K_DB_V2.1].[dbo].[StatusTable]";
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -309,7 +308,7 @@ namespace RM_API_Kafka.WebMethod
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "Insert into [RM_K_DB_V2].[dbo].[TypeTable](Id,Name) Values(" + typeObj.Id + ",'"+ typeObj.Name +"')";
+                    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TypeTable](Id,Name) Values(" + typeObj.Id + ",'"+ typeObj.Name +"')";
                         cmd.ExecuteNonQuery();
                 }
                 con.Close();
@@ -326,7 +325,7 @@ namespace RM_API_Kafka.WebMethod
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "Insert into [RM_K_DB_V2].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) " +
+                    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) " +
                         "Values(" + resourceTag.TagId + ",'" + resourceTag.TagName + "','" + resourceTag.TagValue + "','" + resourceTag.TagUOM +
                         "','" + resourceTag.TagCreationDate + "'," + resourceTag.ResourceId + ")";
                     cmd.ExecuteNonQuery();
@@ -348,7 +347,7 @@ namespace RM_API_Kafka.WebMethod
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "Select CONCAT(Id, ':- ', Name) as ResourceName, Id as ResourceId from [RM_K_DB_V2].[dbo].[ResourceTable]";
+                    cmd.CommandText = "Select CONCAT(Id, ':- ', Name, ' :(', Type, ')') as ResourceName, Id as ResourceId, Type, TypeId from [RM_K_DB_V2.1].[dbo].[ResourceTable]";
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -361,7 +360,9 @@ namespace RM_API_Kafka.WebMethod
                                 new ResourceModel
                                 {
                                     ResourceId = Convert.ToInt64(row["ResourceId"]),
-                                    ResourceName = Convert.ToString(row["ResourceName"])
+                                    ResourceName = Convert.ToString(row["ResourceName"]),
+                                    TypeName = Convert.ToString(row["Type"]),
+                                    TypeID = Convert.ToInt32(row["TypeId"])
                                 }
                                 );
                         }
@@ -384,7 +385,7 @@ namespace RM_API_Kafka.WebMethod
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "Select CONCAT(Id, ':- ', Name) as TagName, Id as TagId from [RM_K_DB_V2].[dbo].[TagTable] where ResourceId = " + resourceId;
+                    cmd.CommandText = "Select CONCAT(ResourceId, ':- ', TagName) as TagName, ResourceId as ResourceId from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable] where ResourceId = " + resourceId;
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -396,7 +397,7 @@ namespace RM_API_Kafka.WebMethod
                             tagList.Add(
                                 new Tag
                                 {
-                                    TagId = Convert.ToInt64(row["TagId"]),
+                                    TagResourceId = Convert.ToInt64(row["ResourceId"]),
                                     TagName = Convert.ToString(row["TagName"])
                                 }
                                 );
@@ -418,7 +419,7 @@ namespace RM_API_Kafka.WebMethod
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "Insert into [RM_K_DB_V2].[dbo].[StatusTable](Id,Name) Values(" + statusObj.Id + ",'" + statusObj.Name + "')";
+                    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[StatusTable](Id,Name) Values(" + statusObj.Id + ",'" + statusObj.Name + "')";
                     cmd.ExecuteNonQuery();
                 }
                 con.Close();
@@ -434,18 +435,9 @@ namespace RM_API_Kafka.WebMethod
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand())
                 {
-                    long newTagId;
                     cmd.Connection = con;
-                    cmd.CommandText = "Select Max(Id) as newId From [RM_K_DB_V2].[dbo].[TagTable]";
-                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                    {
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-                        long tagId = Convert.ToInt32(dt.Rows[0][0]);
-                        newTagId = tagId + 1;
-                    }
-                    cmd.CommandText = "Insert into [RM_K_DB_V2].[dbo].[ResourceAndTagRegistrationTable](TypeName,TypeId,TagName,TagId,TagUOM) " +
-                        "Values('" + registrationObj.TypeName + "'," + registrationObj.TypeId + ",'" + registrationObj.TagName + "'," + newTagId + ",'" + registrationObj.TagUOM + "')";
+                    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable](TypeName,TypeId,TagName,ResourceId,TagUOM) " +
+                        "Values('" + registrationObj.TypeName + "'," + registrationObj.TypeId + ",'" + registrationObj.TagName + "'," + registrationObj.ResourceId + ",'" + registrationObj.TagUOM + "')";
                     cmd.ExecuteNonQuery();
                 }
                 con.Close();
@@ -462,7 +454,7 @@ namespace RM_API_Kafka.WebMethod
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "Insert into [RM_K_DB_V2].[dbo].[ResourceTable](Id,Name,Type,TypeId,CreationDate) " +
+                    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[ResourceTable](Id,Name,Type,TypeId,CreationDate) " +
                         "Values(" + resource.ResourceId + ",'" + resource.ResourceName + "','" + resource.TypeName + "'," + resource.TypeID + ",'" + DateTime.Now + "')";
                     cmd.ExecuteNonQuery();
                 }
@@ -481,7 +473,7 @@ namespace RM_API_Kafka.WebMethod
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "Select Count(*) as count from [RM_K_DB_V2].[dbo].[ResourceTable] where Id = " + resourceId;
+                    cmd.CommandText = "Select Count(*) as count from [RM_K_DB_V2.1].[dbo].[ResourceTable] where Id = " + resourceId;
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
                         DataTable dt = new DataTable();

@@ -64,7 +64,7 @@ namespace RM_K_WIN_APP
                 ResourceWithValue tagValue = new ResourceWithValue();
                 tagValue.ResourceId = Convert.ToInt64(this.cmBxResourceName.SelectedValue.ToString());
                 Tag tag = (Tag)this.cmBxTagName.SelectedItem;
-                tagValue.TagName = tag.TagName.Replace(tag.TagId + ":- ", "");
+                tagValue.TagName = tag.TagName.Replace(tag.TagResourceId + ":- ", "");
                 var obj = Constants.tagUOM.FirstOrDefault(x => x.Key == tagValue.TagName);
                 tagValue.TagUOM = tagValue.TagName == "Status"? null : obj.Value.ToString();
                 tagValue.TagCreationDate = DateTime.Now;

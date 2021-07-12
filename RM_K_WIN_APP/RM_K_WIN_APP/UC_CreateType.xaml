@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:RM_K_WIN_APP"
-             mc:Ignorable="d" 
-             d:DesignHeight="540" d:DesignWidth="800">
+             mc:Ignorable="d" d:DesignHeight="540" d:DesignWidth="800" Height="540" Width="800">
     <StackPanel Background="FloralWhite" Orientation="Vertical">
         <Label Height="36" Width="160" FlowDirection="LeftToRight" HorizontalAlignment="Left" Margin="20,20,0,20" FontSize="20" FontWeight="Heavy">Add Type:-</Label>
         <StackPanel Orientation="Horizontal">

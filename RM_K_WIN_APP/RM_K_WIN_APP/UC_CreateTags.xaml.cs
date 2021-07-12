@@ -25,10 +25,10 @@ namespace RM_K_WIN_APP
         public UC_CreateTags()
         {
             InitializeComponent();
-            List<Models.Type> typeList = ServiceRepository.GetTypeList();
-            cmBxTagType.ItemsSource = typeList;
-            if (typeList.Count > 0)
-                this.cmBxTagType.SelectedItem = typeList[0];
+            List<Models.ResourceModel> resourceList = ServiceRepository.GetResourceDetails();
+            cmBxResource.ItemsSource = resourceList;
+            if (resourceList.Count > 0)
+                this.cmBxResource.SelectedItem = resourceList[0];
             cmBxTagName.ItemsSource = Constants.tagNames;
         }
 
@@ -39,13 +39,14 @@ namespace RM_K_WIN_APP
 
         private void btnAddTag_Click(object sender, RoutedEventArgs e)
         {
-            if (this.cmBxTagType.SelectedIndex > 0 && this.cmBxTagName.SelectedIndex > 0)
+            if (this.cmBxResource.SelectedIndex > 0 && this.cmBxTagName.SelectedIndex > 0)
             {
                 Models.TagRegistrationModel tag = new Models.TagRegistrationModel();
-                Models.Type selectedType = (Models.Type)this.cmBxTagType.SelectedItem;
-                tag.TypeName = selectedType.Name;
-                tag.TypeId = selectedType.Id;
+                Models.ResourceModel selectedItem = (Models.ResourceModel)this.cmBxResource.SelectedItem;
+                tag.TypeName = selectedItem.TypeName;
+                tag.TypeId = selectedItem.TypeID;
                 tag.TagName = this.cmBxTagName.SelectedValue.ToString();
+                tag.ResourceId = selectedItem.ResourceId;
                 tag.TagUOM = this.txtBxTagUOM.Text;
                 ServiceRepository.RegisterNewTag(tag);
             }
@@ -55,7 +56,7 @@ namespace RM_K_WIN_APP
 
         private void btnCancelEntry_Click(object sender, RoutedEventArgs e)
         {
-            this.cmBxTagType.SelectedIndex = 0;
+            this.cmBxResource.SelectedIndex = 0;
             this.cmBxTagName.SelectedIndex = 0;
             this.txtBxTagUOM.Text = String.Empty;
         }

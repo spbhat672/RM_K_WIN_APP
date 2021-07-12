@@ -29,7 +29,7 @@
         </EventTrigger>
     </Window.Triggers>
     <Grid Background="#FFDEDEDE">
-        <Grid x:Name="GridMain" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="540" Width="1010">
+        <Grid x:Name="GridMain" HorizontalAlignment="Center" VerticalAlignment="Center" Height="540" Width="1010" Margin="70,60,0,0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontWeight="Bold">WELCOME</Label>
             </StackPanel>
@@ -39,8 +39,11 @@
                 <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
             </Grid.Effect>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel x:Name="panelWindowMinimize" Orientation="Horizontal" MouseDown="panelWindowMinimize_MouseDown">
+                    <materialDesign:PackIcon Kind="WindowMinimize"  Height="25" Width="25" Margin="10" Background="LightPink"  VerticalAlignment="Center"/>
+                </StackPanel>
                 <StackPanel x:Name="panelWindowResize" Orientation="Horizontal" MouseDown="panelWindowResize_MouseDown">
-                    <materialDesign:PackIcon Kind="ResizeBottomRight" Height="25" Width="25" Margin="10" Background="LightPink"  VerticalAlignment="Center"/>
+                    <materialDesign:PackIcon Kind="WindowRestore"  Height="25" Width="25" Margin="10" Background="LightPink"  VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel x:Name="panelClose" Orientation="Horizontal" MouseDown="panelClose_MouseDown">
                     <materialDesign:PackIcon Kind="Close" Height="25" Width="25" Margin="10" Background="LightPink"  VerticalAlignment="Center"/>

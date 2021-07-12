@@ -130,7 +130,7 @@ namespace RM_K_WIN_APP.WebMethod
                         var resourceJsonString = response.Content.ReadAsStringAsync().Result;
                         var deserialized = JsonConvert.DeserializeObject(resourceJsonString, typeof(List<Tag>));
                         responseObj = (List<Tag>)deserialized;
-                        responseObj.Insert(0, new Models.Tag() { TagId = -9999, TagName = "Choose One Tag" });
+                        responseObj.Insert(0, new Models.Tag() { TagResourceId = -9999, TagName = "Choose One Tag" });
                     }
                 }
             }
@@ -328,7 +328,7 @@ namespace RM_K_WIN_APP.WebMethod
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    HttpResponseMessage response = client.PostAsJsonAsync($"api/PostStatus/", tagRegModel).Result;
+                    HttpResponseMessage response = client.PostAsJsonAsync($"api/PostRegisterTag/", tagRegModel).Result;
 
                     if (response.IsSuccessStatusCode)
                     {

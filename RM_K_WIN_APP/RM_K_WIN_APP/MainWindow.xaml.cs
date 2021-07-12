@@ -78,12 +78,17 @@ namespace RM_K_WIN_APP
         {
             if(this.WindowState == WindowState.Maximized)
             {
-                this.WindowState = WindowState.Minimized;
+                this.WindowState = WindowState.Normal;
             }
-            else if(this.WindowState == WindowState.Minimized)
+            else if(this.WindowState == WindowState.Normal)
             {
                 this.WindowState = WindowState.Maximized;
             }
+        }
+
+        private void panelWindowMinimize_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
         }
     }
 }
