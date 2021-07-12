@@ -39,6 +39,9 @@
                 <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
             </Grid.Effect>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel x:Name="panelWindowResize" Orientation="Horizontal" MouseDown="panelWindowResize_MouseDown">
+                    <materialDesign:PackIcon Kind="ResizeBottomRight" Height="25" Width="25" Margin="10" Background="LightPink"  VerticalAlignment="Center"/>
+                </StackPanel>
                 <StackPanel x:Name="panelClose" Orientation="Horizontal" MouseDown="panelClose_MouseDown">
                     <materialDesign:PackIcon Kind="Close" Height="25" Width="25" Margin="10" Background="LightPink"  VerticalAlignment="Center"/>
                 </StackPanel>
