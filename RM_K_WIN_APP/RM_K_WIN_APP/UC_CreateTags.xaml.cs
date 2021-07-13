@@ -66,7 +66,7 @@ namespace RM_K_WIN_APP
             string selectedTagType = this.cmBxTagName.SelectedValue.ToString();
             if(Constants.tagUOM.ContainsKey(selectedTagType))
             {
-                this.txtBxTagUOM.Text = Constants.tagUOM.FirstOrDefault(x => x.Key == selectedTagType).Value.ToString();
+                this.txtBxTagUOM.Text = Constants.tagUOM.FirstOrDefault(x => x.Key == selectedTagType).Value;
             }
             
         }
