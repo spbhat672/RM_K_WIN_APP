@@ -33,7 +33,7 @@ GO
 
 CREATE TABLE [dbo].[ResourceAndTagRegistrationTable](
 	[TypeName] [nvarchar](20) NOT NULL,
-	[TypeId] [bigint] NOT NULL,
+	[ResourceId] [bigint] NOT NULL,
 	[TagName] [nvarchar](20) NOT NULL,
 	[TagId] [bigint] NOT NULL,
 	[TagUOM] [nvarchar](10) NULL,
