@@ -50,7 +50,7 @@ namespace RM_API_Kafka.WebMethod
                     }
                     else
                     {
-                        jsonStr2 += @"*" + subItem.Name + "*: {*value*: [" + subItem.Value + "], *uom*: *" + subItem.UOM + "*}" + Environment.NewLine;
+                        jsonStr2 += @"*" + subItem.Name + "*: {*value*: *[" + subItem.Value + "]*, *uom*: *" + subItem.UOM + "*}" + Environment.NewLine;
                     }
                     jsonStr2 += (subItemIteration < subItemCount) ? ("," + Environment.NewLine) : String.Empty;
                     subItemCount++;

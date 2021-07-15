@@ -388,6 +388,7 @@ D:\3DS\Work\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.csproj.CopyComplete
 D:\3DS\Work\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.dll
 D:\3DS\Work\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.pdb
 D:\3DS\Work\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.csprojAssemblyReference.cache
+D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\OSExtensions.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\librdkafka\x86\librdkafka.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\librdkafka\x86\librdkafkacpp.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\librdkafka\x86\libzstd.dll
@@ -412,7 +413,6 @@ D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\amd64\vcruntime140.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\amd64\vcruntime140_1.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\TraceReloggerLib.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\Dia2Lib.dll
-D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\OSExtensions.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\RM_API_Kafka.dll.config
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\RM_API_Kafka.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\bin\RM_API_Kafka.pdb
