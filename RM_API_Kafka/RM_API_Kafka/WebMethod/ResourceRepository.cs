@@ -347,7 +347,7 @@ namespace RM_API_Kafka.WebMethod
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "Select CONCAT(Id, ':- ', Name, ' :(', Type, ')') as ResourceName, Id as ResourceId, Type, TypeId from [RM_K_DB_V2.1].[dbo].[ResourceTable]";
+                    cmd.CommandText = "Select CONCAT(Id, ':- ', Name, ' :(', Type, ')') as ResourceDisplayName, Name ResourceName, Id as ResourceId, Type as TypeName, TypeId from [RM_K_DB_V2.1].[dbo].[ResourceTable]";
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -361,8 +361,50 @@ namespace RM_API_Kafka.WebMethod
                                 {
                                     ResourceId = Convert.ToInt64(row["ResourceId"]),
                                     ResourceName = Convert.ToString(row["ResourceName"]),
-                                    TypeName = Convert.ToString(row["Type"]),
+                                    ResourceDisplayName = Convert.ToString(row["ResourceDisplayName"]),
+                                    TypeName = Convert.ToString(row["TypeName"]),
                                     TypeID = Convert.ToInt32(row["TypeId"])
+                                }
+                                );
+                        }
+                    }
+                }
+                con.Close();
+            }
+            return resourceList;
+        }
+        #endregion
+
+        #region Get Resource details
+        public static List<ResourceModel> GetResourceDetailsFromReg()
+        {
+            List<ResourceModel> resourceList = new List<ResourceModel>();
+
+            using (SqlConnection con = new SqlConnection(conString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "Select CONCAT(ResourceId, ':- ', ResourceName, ' :(', TypeName, ')') as ResourceDisplayName, ResourceId, TypeName, TypeId, TagId, ResourceName from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable]";
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            resourceList.Add(
+                                new ResourceModel
+                                {
+                                    ResourceId = Convert.ToInt64(row["ResourceId"]),
+                                    ResourceName = Convert.ToString(row["ResourceName"]),
+                                    TypeName = Convert.ToString(row["TypeName"]),
+                                    TypeID = Convert.ToInt32(row["TypeId"]),
+                                    ResourceDisplayName = Convert.ToString(row["ResourceDisplayName"]),
+                                    TagId = Convert.ToInt64(row["TagId"])
                                 }
                                 );
                         }
@@ -385,7 +427,7 @@ namespace RM_API_Kafka.WebMethod
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "Select CONCAT(ResourceId, ':- ', TagName) as TagName, ResourceId as ResourceId from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable] where ResourceId = " + resourceId;
+                    cmd.CommandText = "Select CONCAT(ResourceId, ':- ', TagName) as TagName, TagId, ResourceId from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable] where ResourceId = " + resourceId;
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -398,7 +440,8 @@ namespace RM_API_Kafka.WebMethod
                                 new Tag
                                 {
                                     TagResourceId = Convert.ToInt64(row["ResourceId"]),
-                                    TagName = Convert.ToString(row["TagName"])
+                                    TagName = Convert.ToString(row["TagName"]),
+                                    TagId = Convert.ToInt64(row["TagId"])
                                 }
                                 );
                         }
@@ -436,8 +479,9 @@ namespace RM_API_Kafka.WebMethod
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable](TypeName,TypeId,TagName,ResourceId,TagUOM) " +
-                        "Values('" + registrationObj.TypeName + "'," + registrationObj.TypeId + ",'" + registrationObj.TagName + "'," + registrationObj.ResourceId + ",'" + registrationObj.TagUOM + "')";
+                    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable](TypeName,TypeId,TagName,ResourceId,TagUOM,ResourceName) " +
+                        "Values('" + registrationObj.TypeName + "'," + registrationObj.TypeId + ",'" + registrationObj.TagName + "'," + registrationObj.ResourceId + ",'" 
+                        + registrationObj.TagUOM + "','" + registrationObj.ResourceName + "')";
                     cmd.ExecuteNonQuery();
                 }
                 con.Close();

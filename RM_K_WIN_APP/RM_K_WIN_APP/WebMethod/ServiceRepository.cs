@@ -113,6 +113,31 @@ namespace RM_K_WIN_APP.WebMethod
             return responseObj;
         }
 
+        public static List<ResourceModel> GetResourceDetailsForReg()
+        {
+            List<ResourceModel> responseObj = new List<ResourceModel>();
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44361/" + "/ResourceInfo/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = client.GetAsync($"api/GetResourceDetailsForReg").Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var resourceJsonString = response.Content.ReadAsStringAsync().Result;
+                        var deserialized = JsonConvert.DeserializeObject(resourceJsonString, typeof(List<ResourceModel>));
+                        responseObj = (List<ResourceModel>)deserialized;
+                        responseObj.Insert(0, new Models.ResourceModel() { ResourceId = -9999, ResourceName = "Choose One Resource" });
+                    }
+                }
+            }
+            catch (Exception ex) { }
+            return responseObj;
+        }
+
         public static List<Tag> GetTagDetails(long resourceId)
         {
             List<Tag> responseObj = new List<Tag>();

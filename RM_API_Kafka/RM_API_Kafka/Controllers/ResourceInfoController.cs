@@ -115,6 +115,21 @@ namespace RM_API_Kafka.Controllers
         }
 
         [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/GetResourceDetailsFromReg")]
+        public HttpResponseMessage GetResourceDetailsFromReg()
+        {
+            try
+            {
+                List<ResourceModel> resourceList = ResourceRepository.GetResourceDetailsFromReg();
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, resourceList);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(System.Net.HttpStatusCode.NotFound, "Server - Error Fetching resource Information");
+            }
+        }
+
+        [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/GetResourceDetails")]
         public HttpResponseMessage GetResourceDetails()
         {

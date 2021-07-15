@@ -1,4 +1,5 @@
-﻿using RM_K_WIN_APP.Utils;
+﻿using RM_K_WIN_APP.Models;
+using RM_K_WIN_APP.Utils;
 using RM_K_WIN_APP.WebMethod;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace RM_K_WIN_APP
         {
             InitializeComponent();
             List<Models.ResourceModel> resourceList = ServiceRepository.GetResourceDetails();
+            resourceList = resourceList.GroupBy(x => x.ResourceId).Select(g => g.First()).ToList();
             cmBxResource.ItemsSource = resourceList;
             if (resourceList.Count > 0)
                 this.cmBxResource.SelectedItem = resourceList[0];
@@ -47,6 +49,7 @@ namespace RM_K_WIN_APP
                 tag.TypeId = selectedItem.TypeID;
                 tag.TagName = this.cmBxTagName.SelectedValue.ToString();
                 tag.ResourceId = selectedItem.ResourceId;
+                tag.ResourceName = selectedItem.ResourceName;
                 tag.TagUOM = this.txtBxTagUOM.Text;
                 ServiceRepository.RegisterNewTag(tag);
             }

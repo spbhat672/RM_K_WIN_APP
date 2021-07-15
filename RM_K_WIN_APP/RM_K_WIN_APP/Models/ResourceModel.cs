@@ -12,5 +12,7 @@ namespace RM_K_WIN_APP.Models
         public int TypeID { get; set; }
         public long ResourceId { get; set; }
         public string ResourceName { get; set; }
+        public long TagId { get; set; }
+        public string ResourceDisplayName { get; set; }
     }
 }

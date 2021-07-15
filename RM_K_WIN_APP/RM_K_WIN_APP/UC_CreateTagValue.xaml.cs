@@ -68,7 +68,8 @@ namespace RM_K_WIN_APP
                 var obj = Constants.tagUOM.FirstOrDefault(x => x.Key == tagValue.TagName);
                 tagValue.TagUOM = tagValue.TagName == "Status"? null : obj.Value.ToString();
                 tagValue.TagCreationDate = DateTime.Now;
-                tagValue.TagId = Convert.ToInt64(this.cmBxTagName.SelectedValue);
+                Tag selectedTag = (Tag)this.cmBxTagName.SelectedItem;
+                tagValue.TagId = selectedTag.TagId;
                 string tagInputValue = "";
                 if (this.Status.IsVisible)
                 {

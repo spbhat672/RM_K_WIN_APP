@@ -9,7 +9,7 @@
         <Label Height="36" Width="160" FlowDirection="LeftToRight" HorizontalAlignment="Left" Margin="20,20,0,20" FontSize="20" FontWeight="Heavy">Add Tags:-</Label>
         <StackPanel Orientation="Horizontal">
             <Label Background="AliceBlue" FontSize="20" FontWeight="Bold" Margin="25,20,10,5" BorderThickness="1" BorderBrush="Black" Width="117">Resource</Label>
-            <ComboBox x:Name="cmBxResource" Height="35" Width="300" Background="LightCyan"  VerticalAlignment="Bottom" Margin="10,5,5,5" BorderThickness="1" BorderBrush="Black" DisplayMemberPath="ResourceName"
+            <ComboBox x:Name="cmBxResource" Height="35" Width="300" Background="LightCyan"  VerticalAlignment="Bottom" Margin="10,5,5,5" BorderThickness="1" BorderBrush="Black" DisplayMemberPath="ResourceDisplayName"
                       SelectedValuePath="ResourceId" Foreground="Black"></ComboBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
