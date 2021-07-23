@@ -369,6 +369,35 @@ namespace RM_K_WIN_APP.WebMethod
             }
         }
 
+        public static void RegisterTagValue(List<ExcelTagInput> tagList)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44361/" + "/ResourceInfo/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = client.PostAsJsonAsync($"api/PostResourceAndTag/", tagList).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string msg = "successfully saved new Tag" + Environment.NewLine + "duplicate tags:-" + 
+                            response.Content.ReadAsStringAsync().Result;
+                        MessageBox.Show(msg);
+                    }
+                    else
+                        MessageBox.Show("Error Save data");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errorrr  " + ex.Message);
+            }
+        }
+
+
         public static bool IsResourceExist(long resourceId)
         {
             bool isResourceExist = true;

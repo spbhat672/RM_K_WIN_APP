@@ -1,15 +1,21 @@
-﻿using RM_K_WIN_APP.Models;
+﻿using Microsoft.Win32;
+using RM_K_WIN_APP.Models;
 using RM_K_WIN_APP.Utils;
 using RM_K_WIN_APP.WebMethod;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,7 +27,7 @@ namespace RM_K_WIN_APP
     /// <summary>
     /// Interaction logic for UC_CreateTagValue.xaml
     /// </summary>
-    public partial class UC_CreateTagValue : UserControl
+    public partial class UC_CreateTagValue : System.Windows.Controls.UserControl
     {
         public UC_CreateTagValue()
         {
@@ -38,27 +44,27 @@ namespace RM_K_WIN_APP
             {
                 if (this.cmBxResourceName.SelectedIndex == 0 || this.cmBxTagName.SelectedIndex == 0)
                 {
-                    MessageBox.Show("Invalid Input");
+                    System.Windows.MessageBox.Show("Invalid Input");
                     return;
                 }
                 else if(this.Status.IsVisible && this.cmBxStatus.SelectedIndex == 0)
                 {
-                    MessageBox.Show("Choose one status");
+                    System.Windows.MessageBox.Show("Choose one status");
                     return;
                 }
                 else if(this.Speed.IsVisible && String.IsNullOrEmpty(this.txtBxSpeedValue.Text))
                 {
-                    MessageBox.Show("Speed value is empty");
+                    System.Windows.MessageBox.Show("Speed value is empty");
                     return;
                 }
                 else if(this.Position.IsVisible && (this.txtBxPosition.Text.Length < 5) && (this.txtBxPosition.Text.Count(x => x == ',') != 2))
                 {
-                    MessageBox.Show("Position value is wrong");
+                    System.Windows.MessageBox.Show("Position value is wrong");
                     return;
                 }
                 else if(this.Orientation.IsVisible && (this.txtBxOrientation.Text.Length < 5) && (this.txtBxOrientation.Text.Count(x => x == ',') != 2))
                 {
-                    MessageBox.Show("Orientation value is wrong");
+                    System.Windows.MessageBox.Show("Orientation value is wrong");
                     return;
                 }
                 ResourceWithValue tagValue = new ResourceWithValue();
@@ -151,6 +157,67 @@ namespace RM_K_WIN_APP
                     this.Orientation.Visibility = Visibility.Collapsed;
                 }
             }
+        }
+
+        private void btnImport_Click(object sender, RoutedEventArgs e)
+        {
+            string fname = "";
+            System.Windows.Forms.OpenFileDialog fdlg = new System.Windows.Forms.OpenFileDialog();
+            fdlg.Title = "Choose one Tag related Excel file";
+            fdlg.InitialDirectory = @"c:\";
+            fdlg.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
+            fdlg.RestoreDirectory = true;
+            if (fdlg.ShowDialog() == DialogResult.OK)
+            {
+                fname = fdlg.FileName;
+            }
+
+
+            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(fname);
+            Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Microsoft.Office.Interop.Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            int rowCount = xlRange.Rows.Count;
+            int colCount = xlRange.Columns.Count;
+
+            List<ExcelTagInput> inputValues = new List<ExcelTagInput>();
+            int j = 1;
+            for (int i = 2; i <= rowCount; i++)
+            {
+                ExcelTagInput excelTag = new ExcelTagInput();
+                excelTag.ResourceId = Convert.ToInt64(xlRange.Cells[i, j].Value);                
+                excelTag.TagId = Convert.ToInt64(xlRange[i, j + 1].Value);
+                excelTag.TagName = Convert.ToString(xlRange[i, j + 2].Value);
+                excelTag.TagValue = Convert.ToString(xlRange[i, j + 3].Value);
+                excelTag.TagUOM = Convert.ToString(xlRange.Cells[i, j + 4].Value);
+                excelTag.TagCreationDate = Convert.ToDateTime(xlRange[i, j + 5].Value);
+                inputValues.Add(excelTag);
+            }
+
+
+            ServiceRepository.RegisterTagValue(inputValues);
+            //cleanup  
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            //rule of thumb for releasing com objects:  
+            //  never use two dots, all COM objects must be referenced and released individually  
+            //  ex: [somthing].[something].[something] is bad  
+
+            //release com objects to fully kill excel process from running in the background  
+            Marshal.ReleaseComObject(xlRange);
+            Marshal.ReleaseComObject(xlWorksheet);
+
+            //close and release  
+            xlWorkbook.Close();
+            Marshal.ReleaseComObject(xlWorkbook);
+
+            //quit and release  
+            xlApp.Quit();
+            Marshal.ReleaseComObject(xlApp);
+
+
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace RM_API_Kafka.WebMethod
+namespace RM_API_Kafka.WebMethod 
 {
     public class ResourceRepository
     {
@@ -332,6 +332,44 @@ namespace RM_API_Kafka.WebMethod
                 }
                 con.Close();
             }
+        }
+        #endregion
+
+        #region Add Excel File Resource Tag
+        public static string AddExcelResource(List<ExcelTagInput> resourceTag)
+        {
+            string unRegisteredResource = "";
+            using (SqlConnection con = new SqlConnection(conString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    List<ExcelTagInput> filteredIp = new List<ExcelTagInput>();
+                    foreach (ExcelTagInput tag in resourceTag)
+                    {
+                        cmd.CommandText = "Select COUNT(*) as Number from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable] where ResourceId = " + tag.ResourceId + " AND TagId = " + tag.TagId + "";
+                        var res = cmd.ExecuteScalar();
+                        if (((int)res) == 1)
+                        {
+                            //resourceTag = resourceTag.Where(x => x.ResourceId == tag.ResourceId && x.TagId == tag.TagId).ToList();
+                            unRegisteredResource += "-(Id:-" + tag.ResourceId + ",Tag:-" + tag.TagId + ")";
+                        }
+                        else
+                            filteredIp.Add(tag);
+                    }
+
+                    foreach(ExcelTagInput tag in filteredIp)
+                    {
+                        cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) " +
+                        "Values(" + tag.TagId + ",'" + tag.TagName + "','" + tag.TagValue + "','" + tag.TagUOM +
+                        "','" + tag.TagCreationDate + "'," + tag.ResourceId + ")";
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                con.Close();
+            }
+            return unRegisteredResource;
         }
         #endregion
 

@@ -35,6 +35,7 @@
             <Label Background="AliceBlue" FontSize="20" FontWeight="Bold" Margin="25,20,10,5" BorderThickness="1" BorderBrush="Black" Width="163">Position</Label>
             <TextBox x:Name="txtBxPosition" Height="35" Width="300" Background="LightCyan"  VerticalAlignment="Bottom" Margin="10,5,5,5" BorderThickness="1" BorderBrush="Black" Foreground="Black"></TextBox>
         </StackPanel>
-        <Button x:Name="btnAddTagValue" Width="129" Height="40" HorizontalAlignment="Left" Margin="190,10,0,5" Click="btnAddTagValue_Click">Add Tag Value</Button>
+        <Button x:Name="btnAddTagValue" Width="129" Height="40" HorizontalAlignment="Left" Margin="282,10,0,5" Click="btnAddTagValue_Click">Add Tag Value</Button>
+        <Button x:Name="btnImport" Content="Import Tag File" Margin="244,50,350,0" Height="62" RenderTransformOrigin="0.38,2.129" Background="#FF37887B" Click="btnImport_Click"/>
     </StackPanel>
 </UserControl>

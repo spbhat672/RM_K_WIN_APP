@@ -176,6 +176,25 @@ namespace RM_API_Kafka.Controllers
         }
 
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/PostResourceAndTag")]
+        public HttpResponseMessage PostResourceAndTag([FromBody] List<ExcelTagInput> reslist)
+        {
+            try
+            {
+                String OPMessage = ResourceRepository.AddExcelResource(reslist);
+                //KafkaService.PostResource(new List<ResourceWithValue>() { model});
+                if (OPMessage.Length != 0)
+                    return Request.CreateResponse(System.Net.HttpStatusCode.OK, 202);
+                else
+                    return Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, OPMessage);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
+            }
+        }
+
+        [System.Web.Http.HttpPost]
         [System.Web.Http.Route("api/PostTagValue")]
         public HttpResponseMessage PostTagValue([FromBody] ResourceWithValue model)
         {
