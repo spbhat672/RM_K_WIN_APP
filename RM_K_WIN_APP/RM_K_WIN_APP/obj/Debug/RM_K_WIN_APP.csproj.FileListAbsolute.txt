@@ -145,3 +145,4 @@ D:\3DS\Work\RM_K_3DXP_INTG\RM_K_WIN_APP\RM_K_WIN_APP\obj\Debug\RM_K_WIN_APP.cspr
 D:\3DS\Work\RM_K_3DXP_INTG\RM_K_WIN_APP\RM_K_WIN_APP\obj\Debug\RM_K_WIN_APP.csproj.CopyComplete
 D:\3DS\Work\RM_K_3DXP_INTG\RM_K_WIN_APP\RM_K_WIN_APP\obj\Debug\RM_K_WIN_APP.exe
 D:\3DS\Work\RM_K_3DXP_INTG\RM_K_WIN_APP\RM_K_WIN_APP\obj\Debug\RM_K_WIN_APP.pdb
+D:\3DS\Work\RM_K_3DXP_INTG\RM_K_WIN_APP\RM_K_WIN_APP\obj\Debug\RM_K_WIN_APP.csprojAssemblyReference.cache
