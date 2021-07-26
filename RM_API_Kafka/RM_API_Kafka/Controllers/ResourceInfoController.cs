@@ -183,10 +183,10 @@ namespace RM_API_Kafka.Controllers
             {
                 String OPMessage = ResourceRepository.AddExcelResource(reslist);
                 //KafkaService.PostResource(new List<ResourceWithValue>() { model});
-                if (OPMessage.Length != 0)
+                if (OPMessage.Length == 0)
                     return Request.CreateResponse(System.Net.HttpStatusCode.OK, 202);
                 else
-                    return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, OPMessage);
+                    return Request.CreateResponse(System.Net.HttpStatusCode.OK, OPMessage);
             }
             catch (Exception ex)
             {

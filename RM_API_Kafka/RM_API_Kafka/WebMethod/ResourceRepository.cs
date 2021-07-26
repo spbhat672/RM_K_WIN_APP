@@ -338,7 +338,7 @@ namespace RM_API_Kafka.WebMethod
         #region Add Excel File Resource Tag
         public static string AddExcelResource(List<ExcelTagInput> resourceTag)
         {
-            string unRegisteredResource = "";
+            string alreadyRegisteredResource = "";
             using (SqlConnection con = new SqlConnection(conString))
             {
                 con.Open();
@@ -348,18 +348,32 @@ namespace RM_API_Kafka.WebMethod
                     List<ExcelTagInput> filteredIp = new List<ExcelTagInput>();
                     foreach (ExcelTagInput tag in resourceTag)
                     {
-                        cmd.CommandText = "Select COUNT(*) as Number from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable] where ResourceId = " + tag.ResourceId + " AND TagId = " + tag.TagId + "";
+                        cmd.CommandText = "Select COUNT(*) as Number from [RM_K_DB_V2.1].[dbo].[TagTable] where ResourceId = " + tag.ResourceId + " AND Id = " + tag.TagId +"";
                         var res = cmd.ExecuteScalar();
                         if (((int)res) == 1)
                         {
                             //resourceTag = resourceTag.Where(x => x.ResourceId == tag.ResourceId && x.TagId == tag.TagId).ToList();
-                            unRegisteredResource += "-(Id:-" + tag.ResourceId + ",Tag:-" + tag.TagId + ")";
+                            alreadyRegisteredResource += "-(Id:-" + tag.ResourceId + ",Tag:-" + tag.TagId + ")";
                         }
                         else
                             filteredIp.Add(tag);
                     }
 
-                    foreach(ExcelTagInput tag in filteredIp)
+                    List<ExcelTagInput> ipList = new List<ExcelTagInput>();
+
+                    foreach (ExcelTagInput tag in filteredIp)
+                    {
+                        cmd.CommandText = "Select COUNT(*) as Number from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable] where ResourceId = " + tag.ResourceId + " AND TagId = " + tag.TagId + "";
+                        var res = cmd.ExecuteScalar();
+                        if (((int)res) == 1)
+                        {
+                            ipList.Add(tag);                            
+                        }
+                        else
+                            continue;
+                    }
+
+                    foreach (ExcelTagInput tag in ipList)
                     {
                         cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) " +
                         "Values(" + tag.TagId + ",'" + tag.TagName + "','" + tag.TagValue + "','" + tag.TagUOM +
@@ -369,7 +383,7 @@ namespace RM_API_Kafka.WebMethod
                 }
                 con.Close();
             }
-            return unRegisteredResource;
+            return alreadyRegisteredResource;
         }
         #endregion
 
