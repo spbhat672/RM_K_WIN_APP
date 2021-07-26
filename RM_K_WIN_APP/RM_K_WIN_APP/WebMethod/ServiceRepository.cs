@@ -383,7 +383,7 @@ namespace RM_K_WIN_APP.WebMethod
 
                     if (response.IsSuccessStatusCode)
                     {
-                        string msg = "successfully saved new Tag" + Environment.NewLine + "duplicate tags:-" + 
+                        string msg = "successfully saved new Tag" + Environment.NewLine + "Repeated tags:-" + 
                             response.Content.ReadAsStringAsync().Result;
                         MessageBox.Show(msg);
                     }

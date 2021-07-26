@@ -351,8 +351,7 @@ namespace RM_API_Kafka.WebMethod
                         cmd.CommandText = "Select COUNT(*) as Number from [RM_K_DB_V2.1].[dbo].[TagTable] where ResourceId = " + tag.ResourceId + " AND Id = " + tag.TagId +"";
                         var res = cmd.ExecuteScalar();
                         if (((int)res) == 1)
-                        {
-                            //resourceTag = resourceTag.Where(x => x.ResourceId == tag.ResourceId && x.TagId == tag.TagId).ToList();
+                        {                            
                             alreadyRegisteredResource += "-(Id:-" + tag.ResourceId + ",Tag:-" + tag.TagId + ")";
                         }
                         else
