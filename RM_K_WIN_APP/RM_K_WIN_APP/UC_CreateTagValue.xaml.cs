@@ -195,7 +195,7 @@ namespace RM_K_WIN_APP
                 inputValues.Add(excelTag);
             }
 
-
+            inputValues = inputValues.Where(x => x.ResourceId != 0 && x.TagId != 0).ToList();
             ServiceRepository.RegisterTagValue(inputValues);
             //cleanup  
             GC.Collect();

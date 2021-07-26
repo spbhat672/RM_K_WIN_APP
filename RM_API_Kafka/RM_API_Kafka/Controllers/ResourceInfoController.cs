@@ -186,7 +186,7 @@ namespace RM_API_Kafka.Controllers
                 if (OPMessage.Length != 0)
                     return Request.CreateResponse(System.Net.HttpStatusCode.OK, 202);
                 else
-                    return Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, OPMessage);
+                    return Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, OPMessage);
             }
             catch (Exception ex)
             {
