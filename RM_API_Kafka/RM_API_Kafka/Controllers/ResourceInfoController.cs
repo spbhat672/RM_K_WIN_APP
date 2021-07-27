@@ -201,7 +201,7 @@ namespace RM_API_Kafka.Controllers
             try
             {
                 ResourceRepository.AddTagValue(model);
-                //KafkaService.PostResource(new List<ResourceWithValue>() { model});
+                KafkaService.PostResource(new List<ResourceWithValue>() { model});
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, 202);
             }
             catch (Exception ex)
