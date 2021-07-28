@@ -127,6 +127,42 @@ namespace RM_API_Kafka.WebMethod
             return jsonString;
         }
 
+        public static string AddExcelImportAsResponse(List<ExcelTagInput> excelInput)
+        {
+            string jsonStr1 = @"{  
+                                    'header': {
+                                                'messageType':'resourceState', 
+                                                'version': '1.0',
+	                                            'dateMsg':	'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + @"',                                                
+	                                     },
+	                                'body':{
+                                                'resourceState': [";
+
+            string jsonStr2 = "";
+            foreach (ExcelTagInput tagIn in excelInput)
+            {
+                jsonStr2 += @"{
+                              'id': '" + tagIn.ResourceId + @"',
+			                  'updateDataDate': '" + tagIn.TagCreationDate.ToString("yyyy-MM-dd HH:mm:ss") + @"',
+						      'tags': {
+                    ";
+                jsonStr2 += "*" + tagIn.TagName + "*:" + "{*value*:*" + tagIn.TagValue + "*,*uom*:*" + tagIn.TagUOM + "*,*ExtId*:*" + tagIn.TagId + "*" + "}";
+                jsonStr2 += Environment.NewLine + "}" + Environment.NewLine + Environment.NewLine + "}";
+            }
+            string jsonStr3 = @"]
+                                    }
+                                }";
+
+            string jsonString = jsonStr1 + jsonStr2 + jsonStr3;
+            jsonString = jsonString.Replace('\'', '\"');
+            jsonString = jsonString.Replace('*', '\"');
+            jsonString = jsonString.Replace("\n", "").ToString();
+            jsonString = jsonString.Replace("\t", "").ToString();
+            jsonString = jsonString.Replace("\r", "").ToString();
+            jsonString = jsonString.Trim('\t');
+            return jsonString;
+        }
+
         public static List<ResourceWithValue> GetResourceListForDataInsert(ResourceAddModel model)
         {
             List<ResourceWithValue> resList = new List<ResourceWithValue>();

@@ -335,5 +335,23 @@ namespace RM_API_Kafka.WebMethod
                 Console.WriteLine("Error saving bulk to kafka server" + Environment.NewLine + ex.Message);
             }
         }
+
+        public static void PostExcelResource(string jsonResource)
+        {
+            try
+            {
+                string topic = ServiceTopics.rmResourceBulk;
+                Message msg = new Message(jsonResource);
+                Uri uri = new Uri("http://localhost:9092");
+                var options = new KafkaOptions(uri);
+                var router = new BrokerRouter(options);
+                var client = new Producer(router);
+                client.SendMessageAsync(topic, new List<Message> { msg }).Wait();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error saving bulk to kafka server" + Environment.NewLine + ex.Message);
+            }
+        }
     }
 }

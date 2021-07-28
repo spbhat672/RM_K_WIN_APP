@@ -170,53 +170,51 @@ namespace RM_K_WIN_APP
             if (fdlg.ShowDialog() == DialogResult.OK)
             {
                 fname = fdlg.FileName;
+                Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+                Microsoft.Office.Interop.Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(fname);
+                Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+                Microsoft.Office.Interop.Excel.Range xlRange = xlWorksheet.UsedRange;
+
+                int rowCount = xlRange.Rows.Count;
+                int colCount = xlRange.Columns.Count;
+
+                List<ExcelTagInput> inputValues = new List<ExcelTagInput>();
+                int j = 1;
+                for (int i = 2; i <= rowCount; i++)
+                {
+                    ExcelTagInput excelTag = new ExcelTagInput();
+                    excelTag.ResourceId = Convert.ToInt64(xlRange.Cells[i, j].Value);
+                    excelTag.TagId = Convert.ToInt64(xlRange[i, j + 1].Value);
+                    excelTag.TagName = Convert.ToString(xlRange[i, j + 2].Value);
+                    excelTag.TagValue = Convert.ToString(xlRange[i, j + 3].Value);
+                    excelTag.TagUOM = Convert.ToString(xlRange.Cells[i, j + 4].Value);
+                    excelTag.TagCreationDate = Convert.ToDateTime(xlRange[i, j + 5].Value);
+                    inputValues.Add(excelTag);
+                }
+
+                inputValues = inputValues.Where(x => x.ResourceId != 0 && x.TagId != 0).ToList();
+                ServiceRepository.RegisterTagValue(inputValues);
+                //cleanup  
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                //rule of thumb for releasing com objects:  
+                //  never use two dots, all COM objects must be referenced and released individually  
+                //  ex: [somthing].[something].[something] is bad  
+
+                //release com objects to fully kill excel process from running in the background  
+                Marshal.ReleaseComObject(xlRange);
+                Marshal.ReleaseComObject(xlWorksheet);
+
+                //close and release  
+                xlWorkbook.Close();
+                Marshal.ReleaseComObject(xlWorkbook);
+
+                //quit and release  
+                xlApp.Quit();
+                Marshal.ReleaseComObject(xlApp);
+
             }
-
-
-            Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(fname);
-            Microsoft.Office.Interop.Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-            Microsoft.Office.Interop.Excel.Range xlRange = xlWorksheet.UsedRange;
-
-            int rowCount = xlRange.Rows.Count;
-            int colCount = xlRange.Columns.Count;
-
-            List<ExcelTagInput> inputValues = new List<ExcelTagInput>();
-            int j = 1;
-            for (int i = 2; i <= rowCount; i++)
-            {
-                ExcelTagInput excelTag = new ExcelTagInput();
-                excelTag.ResourceId = Convert.ToInt64(xlRange.Cells[i, j].Value);                
-                excelTag.TagId = Convert.ToInt64(xlRange[i, j + 1].Value);
-                excelTag.TagName = Convert.ToString(xlRange[i, j + 2].Value);
-                excelTag.TagValue = Convert.ToString(xlRange[i, j + 3].Value);
-                excelTag.TagUOM = Convert.ToString(xlRange.Cells[i, j + 4].Value);
-                excelTag.TagCreationDate = Convert.ToDateTime(xlRange[i, j + 5].Value);
-                inputValues.Add(excelTag);
-            }
-
-            inputValues = inputValues.Where(x => x.ResourceId != 0 && x.TagId != 0).ToList();
-            ServiceRepository.RegisterTagValue(inputValues);
-            //cleanup  
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            //rule of thumb for releasing com objects:  
-            //  never use two dots, all COM objects must be referenced and released individually  
-            //  ex: [somthing].[something].[something] is bad  
-
-            //release com objects to fully kill excel process from running in the background  
-            Marshal.ReleaseComObject(xlRange);
-            Marshal.ReleaseComObject(xlWorksheet);
-
-            //close and release  
-            xlWorkbook.Close();
-            Marshal.ReleaseComObject(xlWorkbook);
-
-            //quit and release  
-            xlApp.Quit();
-            Marshal.ReleaseComObject(xlApp);
-
 
         }
     }
