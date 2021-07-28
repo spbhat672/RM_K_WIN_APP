@@ -585,5 +585,30 @@ namespace RM_API_Kafka.WebMethod
             return isResourceExist;
         }
         #endregion
+
+        #region CheckForResourceExistance
+        public static bool CheckForTagNameExistance(string tagName)
+        {
+            bool isTagNameExist = false;
+            using (SqlConnection con = new SqlConnection(conString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandText = "Select Count(*) as count from [RM_K_DB_V2.1].[dbo].[TagNamesTable] where TagName = " + tagName;
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        int count = Convert.ToInt32(dt.Rows[0][0]);
+                        if (count == 1)
+                            isTagNameExist = true;
+                    }
+                }
+            }
+            return isTagNameExist;
+        }
+        #endregion
     }
 }

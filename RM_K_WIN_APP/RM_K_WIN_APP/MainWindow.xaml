@@ -50,7 +50,7 @@
                 </StackPanel>
                 <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Margin="10">
                     <StackPanel Width="150">
-                        <Button Content="Settings"/>
+                        <Button x:Name="btnSettings" Content="Settings" Click="btnSettings_Click"/>
                         <Button Content="Account"/>
                         <Button Content="Help"/>
                         <Separator/>

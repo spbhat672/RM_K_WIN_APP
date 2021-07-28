@@ -284,5 +284,20 @@ namespace RM_API_Kafka.Controllers
                 return Request.CreateErrorResponse(System.Net.HttpStatusCode.NotFound, "Server - Error Fetching resource Information");
             }
         }
+
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/PostIsThereTagEntry")]
+        public HttpResponseMessage PostIsThereTagEntry([FromBody] string  tagName)
+        {
+            try
+            {
+                bool isTagNameExist = ResourceRepository.CheckForTagNameExistance(tagName);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, isTagNameExist);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(System.Net.HttpStatusCode.NotFound, "Server - Error Fetching resource Information");
+            }
+        }
     }
 }

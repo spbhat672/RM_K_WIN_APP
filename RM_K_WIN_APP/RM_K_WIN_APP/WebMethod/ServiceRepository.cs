@@ -397,6 +397,38 @@ namespace RM_K_WIN_APP.WebMethod
             }
         }
 
+        public static bool IsThereTagEntry(string tagName)
+        {
+            bool isThereTagEntry = true;
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44361/" + "/ResourceInfo/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = client.PostAsJsonAsync($"api/PostIsThereTagEntry/", tagName).Result;
+
+                    if (response.IsSuccessStatusCode)
+
+                    {
+                        if (response.Content.ReadAsStringAsync() != null && response.Content.ReadAsStringAsync().Result != null)
+                        {
+                            isThereTagEntry = Convert.ToBoolean(response.Content.ReadAsStringAsync().Result);
+                        }
+                    }
+                    else
+                        MessageBox.Show("Error from Server");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errorrr  " + ex.Message);
+            }
+            return isThereTagEntry;
+        }
+
 
         public static bool IsResourceExist(long resourceId)
         {

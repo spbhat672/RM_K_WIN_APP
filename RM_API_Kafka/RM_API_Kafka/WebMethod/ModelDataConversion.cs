@@ -147,7 +147,7 @@ namespace RM_API_Kafka.WebMethod
 						      'tags': {
                     ";
                 jsonStr2 += "*" + tagIn.TagName + "*:" + "{*value*:*" + tagIn.TagValue + "*,*uom*:*" + tagIn.TagUOM + "*,*ExtId*:*" + tagIn.TagId + "*" + "}";
-                jsonStr2 += Environment.NewLine + "}" + Environment.NewLine + Environment.NewLine + "}";
+                jsonStr2 += Environment.NewLine + "}" + Environment.NewLine + Environment.NewLine + "},";
             }
             string jsonStr3 = @"]
                                     }

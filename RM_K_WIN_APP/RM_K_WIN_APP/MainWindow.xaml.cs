@@ -90,5 +90,11 @@ namespace RM_K_WIN_APP
         {
             this.WindowState = WindowState.Minimized;
         }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow setting = new SettingsWindow();
+            setting.Show();
+        }
     }
 }

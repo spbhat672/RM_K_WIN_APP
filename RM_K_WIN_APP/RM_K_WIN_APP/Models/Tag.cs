@@ -11,5 +11,6 @@ namespace RM_K_WIN_APP.Models
         public string TagName { get; set; }
         public long TagResourceId { get; set; }
         public long TagId { get; set; }
+        public string TagUOM { get; set; }
     }
 }
