@@ -182,7 +182,7 @@ namespace RM_API_Kafka.Controllers
             try
             {
                 String OPMessage = ResourceRepository.AddExcelResource(reslist);
-                //KafkaService.PostResource(new List<ResourceWithValue>() { model});
+                KafkaService.PostResource(reslist);
                 if (OPMessage.Length == 0)
                     return Request.CreateResponse(System.Net.HttpStatusCode.OK, 202);
                 else

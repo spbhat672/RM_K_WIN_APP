@@ -316,8 +316,27 @@ namespace RM_API_Kafka.WebMethod
             return resList;
         }
 
-
         public static void PostResource(List<ResourceWithValue> resourceList)
+        {
+            try
+            {
+                string jsonResource = ModelDataConversion.AddModelToResponseModel(resourceList);
+                string topic = ServiceTopics.rmResourceBulk;
+                Message msg = new Message(jsonResource);
+                Uri uri = new Uri("http://localhost:9092");
+                var options = new KafkaOptions(uri);
+                var router = new BrokerRouter(options);
+                var client = new Producer(router);
+                client.SendMessageAsync(topic, new List<Message> { msg }).Wait();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error saving bulk to kafka server" + Environment.NewLine + ex.Message);
+            }
+        }
+
+
+        public static void PostResource(List<ExcelTagInput> resourceList)
         {
             try
             {

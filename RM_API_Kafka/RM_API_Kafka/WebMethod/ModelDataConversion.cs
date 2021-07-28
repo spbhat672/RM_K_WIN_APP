@@ -91,6 +91,59 @@ namespace RM_API_Kafka.WebMethod
 			                  'updateDataDate': '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + @"',
 						      'tags': {
                     ";
+            int subItemIteration = 0;
+            int subItemCount = resList.Count();
+            foreach (var subItem in resList)
+            {
+                if (subItem.TagName == "Status")
+                {
+                    jsonStr2 += @"*" + subItem.TagName + "*: {*value*: *" + subItem.TagValue + "*}" + Environment.NewLine;
+                }
+                else if (subItem.TagName == "Speed")
+                {
+                    jsonStr2 += @"*" + subItem.TagName + "*: {*value*: " + subItem.TagValue + ", *uom*: *" + subItem.TagUOM + "*}" + Environment.NewLine;
+                }
+                else
+                {
+                    jsonStr2 += @"*" + subItem.TagName + "*: {*value*: [" + subItem.TagValue + "], *uom*: *" + subItem.TagUOM + "*}" + Environment.NewLine;
+                }
+                jsonStr2 += (subItemIteration < subItemCount) ? ("," + Environment.NewLine) : String.Empty;
+                subItemCount++;
+            }
+
+            jsonStr2 += Environment.NewLine + "}" + Environment.NewLine + Environment.NewLine + "}";
+
+            string jsonStr3 = @"]
+                                    }
+                                }";
+
+            string jsonString = jsonStr1 + jsonStr2 + jsonStr3;
+            jsonString = jsonString.Replace('\'', '\"');
+            jsonString = jsonString.Replace('*', '\"');
+            jsonString = jsonString.Replace("\n", "").ToString();
+            jsonString = jsonString.Replace("\t", "").ToString();
+            jsonString = jsonString.Replace("\r", "").ToString();
+            jsonString = jsonString.Trim('\t');
+            return jsonString;
+        }
+
+        public static string AddModelToResponseModel(List<ExcelTagInput> resList)
+        {
+            string jsonStr1 = @"{  
+                                    'header': {
+                                                'messageType':'resourceState', 
+                                                'version': '1.0',
+	                                            'dateMsg':	'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + @"',                                                
+	                                     },
+	                                'body':{
+                                                'resourceState': [";
+            string jsonStr2 = "";
+
+            jsonStr2 += @"{
+                              'id': '" + resList.FirstOrDefault().ResourceId + @"',
+			                  'updateDataDate': '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + @"',
+						      'tags': {
+                    ";
                 int subItemIteration = 0;
                 int subItemCount = resList.Count();
                 foreach (var subItem in resList)
