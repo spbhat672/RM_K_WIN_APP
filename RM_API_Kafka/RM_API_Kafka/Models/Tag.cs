@@ -10,5 +10,6 @@ namespace RM_API_Kafka.Models
         public string TagName { get; set; }
         public long TagResourceId { get; set; }
         public long TagId { get; set; }
+        public string TagUOM { get; set; }
     }
 }

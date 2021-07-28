@@ -66,6 +66,21 @@ namespace RM_API_Kafka.Controllers
             }
         }
 
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/PostTagName")]
+        public HttpResponseMessage PostTagName([FromBody] Tag model)
+        {
+            try
+            {
+                ResourceRepository.AddTagNames(model);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, 202);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
+            }
+        }
+
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("api/PutResource")]
         public HttpResponseMessage PutResource([FromBody]ResourceAddModel model)

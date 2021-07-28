@@ -65,6 +65,33 @@ namespace RM_K_WIN_APP.WebMethod
             }
         }
 
+        public static void SaveTagName(Tag tagModel)
+        {
+            try
+            {
+                ResourceWithValue responseObj = new ResourceWithValue();
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44361/" + "/ResourceInfo/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = client.PostAsJsonAsync($"api/PostTagName/", tagModel).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("successfully added");
+                    }
+                    else
+                        MessageBox.Show("Error Save data");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errorrr  " + ex.Message);
+            }
+        }
+
         public static bool UpdateResource(ResourceAddModel resModel)
         {
             bool isUpdateSuccess = false;

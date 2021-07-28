@@ -335,6 +335,24 @@ namespace RM_API_Kafka.WebMethod
         }
         #endregion
 
+        #region Add Tag NAMES
+        public static void AddTagNames(Models.Tag tagName)
+        {
+            using (SqlConnection con = new SqlConnection(conString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TagNamesTable](TagName,TagUOM) " +
+                        "Values('" + tagName.TagName + "','" + tagName.TagUOM + "')";
+                    cmd.ExecuteNonQuery();
+                }
+                con.Close();
+            }
+        }
+        #endregion
+
         #region Add Excel File Resource Tag
         public static string AddExcelResource(List<ExcelTagInput> resourceTag)
         {
