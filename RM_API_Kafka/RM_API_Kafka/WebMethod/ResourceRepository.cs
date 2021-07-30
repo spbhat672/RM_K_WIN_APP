@@ -447,6 +447,44 @@ namespace RM_API_Kafka.WebMethod
         }
         #endregion
 
+        #region GetTagNamesDetails
+        public static List<Tag> GetTagNameDetails()
+        {
+            List<Tag> tagNameList = new List<Tag>();
+
+            using (SqlConnection con = new SqlConnection(conString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = con;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "Select TagName,TagUOM from [RM_K_DB_V2.1].[dbo].[TagNamesTable]";
+
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            tagNameList.Add(
+                                new Tag
+                                {
+
+                                    TagName = Convert.ToString(row["TagName"]),
+                                    TagUOM = Convert.ToString(row["TagUOM"])
+                                }
+                                );
+                        }
+                    }
+                }
+                con.Close();
+            }
+            return tagNameList;
+        }
+        #endregion
+
         #region Get Resource details
         public static List<ResourceModel> GetResourceDetailsFromReg()
         {
@@ -614,7 +652,7 @@ namespace RM_API_Kafka.WebMethod
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "Select Count(*) as count from [RM_K_DB_V2.1].[dbo].[TagNamesTable] where TagName = " + tagName;
+                    cmd.CommandText = "Select Count(*) as count from [RM_K_DB_V2.1].[dbo].[TagNamesTable] where TagName = '" + tagName + "'";
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
                         DataTable dt = new DataTable();

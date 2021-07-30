@@ -175,6 +175,21 @@ namespace RM_API_Kafka.Controllers
         }
 
         [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/GetTagNameDetails")]
+        public HttpResponseMessage GetTagNameDetails()
+        {
+            try
+            {
+                List<Tag> tagNameList = ResourceRepository.GetTagNameDetails();
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, tagNameList);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(System.Net.HttpStatusCode.NotFound, "Server - Error Fetching resource Information");
+            }
+        }
+
+        [System.Web.Http.HttpGet]
         [System.Web.Http.Route("api/GetStatusList")]
         public HttpResponseMessage GetStatusList()
         {
@@ -216,7 +231,7 @@ namespace RM_API_Kafka.Controllers
             try
             {
                 ResourceRepository.AddTagValue(model);
-                KafkaService.PostResource(new List<ResourceWithValue>() { model});
+                //KafkaService.PostResource(new List<ResourceWithValue>() { model});
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, 202);
             }
             catch (Exception ex)

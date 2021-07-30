@@ -140,6 +140,31 @@ namespace RM_K_WIN_APP.WebMethod
             return responseObj;
         }
 
+        public static List<Tag> GetTagNamesDetails()
+        {
+            List<Tag> responseObj = new List<Tag>();
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:44361/" + "/ResourceInfo/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = client.GetAsync($"api/GetTagNameDetails").Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var resourceJsonString = response.Content.ReadAsStringAsync().Result;
+                        var deserialized = JsonConvert.DeserializeObject(resourceJsonString, typeof(List<Tag>));
+                        responseObj = (List<Tag>)deserialized;
+                        responseObj.Insert(0, new Models.Tag() { TagResourceId = -9999, TagName = "Choose One Tag" });
+                    }
+                }
+            }
+            catch (Exception ex) { }
+            return responseObj;
+        }
+
         public static List<ResourceModel> GetResourceDetailsForReg()
         {
             List<ResourceModel> responseObj = new List<ResourceModel>();

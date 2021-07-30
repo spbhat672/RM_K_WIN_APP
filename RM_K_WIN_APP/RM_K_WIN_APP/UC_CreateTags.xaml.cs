@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,7 +23,7 @@ namespace RM_K_WIN_APP
     /// <summary>
     /// Interação lógica para UserControlHome.xam
     /// </summary>
-    public partial class UC_CreateTags : UserControl
+    public partial class UC_CreateTags : System.Windows.Controls.UserControl
     {
         public UC_CreateTags()
         {
@@ -32,7 +33,7 @@ namespace RM_K_WIN_APP
             cmBxResource.ItemsSource = resourceList;
             if (resourceList.Count > 0)
                 this.cmBxResource.SelectedItem = resourceList[0];
-            cmBxTagName.ItemsSource = Constants.tagNames;
+            cmBxTagName.ItemsSource = ServiceRepository.GetTagNamesDetails();
         }
 
         private void UC_TagReg_Loaded(object sender, RoutedEventArgs e)
@@ -55,7 +56,7 @@ namespace RM_K_WIN_APP
                 ServiceRepository.RegisterNewTag(tag);
             }
             else
-                MessageBox.Show("Missing Input");
+                System.Windows.MessageBox.Show("Missing INput");
         }
 
         private void btnCancelEntry_Click(object sender, RoutedEventArgs e)
@@ -70,7 +71,9 @@ namespace RM_K_WIN_APP
             string selectedTagType = this.cmBxTagName.SelectedValue.ToString();
             if(Constants.tagUOM.ContainsKey(selectedTagType))
             {
-                this.txtBxTagUOM.Text = Constants.tagUOM.FirstOrDefault(x => x.Key == selectedTagType).Value;
+                List<Tag> tagNamesList = ServiceRepository.GetTagNamesDetails();
+                //this.txtBxTagUOM.Text = Constants.tagUOM.FirstOrDefault(x => x.Key == selectedTagType).Value;
+                this.txtBxTagUOM.Text = tagNamesList.Where(x => x.TagName == this.cmBxResource.Text).Select(x => x.TagUOM).ToString();
             }
             
         }

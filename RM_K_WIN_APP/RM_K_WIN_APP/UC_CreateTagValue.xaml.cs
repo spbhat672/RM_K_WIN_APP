@@ -71,8 +71,9 @@ namespace RM_K_WIN_APP
                 tagValue.ResourceId = Convert.ToInt64(this.cmBxResourceName.SelectedValue.ToString());
                 Tag tag = (Tag)this.cmBxTagName.SelectedItem;
                 tagValue.TagName = tag.TagName.Replace(tag.TagResourceId + ":- ", "");
-                var obj = Constants.tagUOM.FirstOrDefault(x => x.Key == tagValue.TagName);
-                tagValue.TagUOM = tagValue.TagName == "Status"? null : obj.Value.ToString();
+                List<Tag> tagNamesList = ServiceRepository.GetTagNamesDetails();
+                var tagObj = tagNamesList.Where(x => x.TagName == tagValue.TagName).Select(x => x.TagUOM);
+                tagValue.TagUOM = tagObj.FirstOrDefault().ToString();
                 tagValue.TagCreationDate = DateTime.Now;
                 Tag selectedTag = (Tag)this.cmBxTagName.SelectedItem;
                 tagValue.TagId = selectedTag.TagId;
