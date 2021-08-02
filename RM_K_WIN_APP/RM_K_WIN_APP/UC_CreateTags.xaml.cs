@@ -69,13 +69,10 @@ namespace RM_K_WIN_APP
         private void cmBxTagName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selectedTagType = this.cmBxTagName.SelectedValue.ToString();
-            if(Constants.tagUOM.ContainsKey(selectedTagType))
-            {
-                List<Tag> tagNamesList = ServiceRepository.GetTagNamesDetails();
-                //this.txtBxTagUOM.Text = Constants.tagUOM.FirstOrDefault(x => x.Key == selectedTagType).Value;
-                this.txtBxTagUOM.Text = tagNamesList.Where(x => x.TagName == this.cmBxResource.Text).Select(x => x.TagUOM).ToString();
-            }
-            
+            List<Tag> tagNamesList = ServiceRepository.GetTagNamesDetails();
+            //string res = this.cmBxResource.Text
+            var uomObj = tagNamesList.FirstOrDefault(x => x.TagName == selectedTagType);
+            this.txtBxTagUOM.Text = uomObj.TagUOM;
         }
     }
 }

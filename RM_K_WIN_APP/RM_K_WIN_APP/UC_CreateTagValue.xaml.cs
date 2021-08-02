@@ -42,29 +42,9 @@ namespace RM_K_WIN_APP
         {
             try
             {
-                if (this.cmBxResourceName.SelectedIndex == 0 || this.cmBxTagName.SelectedIndex == 0)
+                if (this.cmBxResourceName.SelectedIndex == 0 || this.cmBxTagName.SelectedIndex == 0 || String.IsNullOrEmpty(this.textTagVal.Text))
                 {
                     System.Windows.MessageBox.Show("Invalid Input");
-                    return;
-                }
-                else if(this.Status.IsVisible && this.cmBxStatus.SelectedIndex == 0)
-                {
-                    System.Windows.MessageBox.Show("Choose one status");
-                    return;
-                }
-                else if(this.Speed.IsVisible && String.IsNullOrEmpty(this.txtBxSpeedValue.Text))
-                {
-                    System.Windows.MessageBox.Show("Speed value is empty");
-                    return;
-                }
-                else if(this.Position.IsVisible && (this.txtBxPosition.Text.Length < 5) && (this.txtBxPosition.Text.Count(x => x == ',') != 2))
-                {
-                    System.Windows.MessageBox.Show("Position value is wrong");
-                    return;
-                }
-                else if(this.Orientation.IsVisible && (this.txtBxOrientation.Text.Length < 5) && (this.txtBxOrientation.Text.Count(x => x == ',') != 2))
-                {
-                    System.Windows.MessageBox.Show("Orientation value is wrong");
                     return;
                 }
                 ResourceWithValue tagValue = new ResourceWithValue();
@@ -77,34 +57,15 @@ namespace RM_K_WIN_APP
                 tagValue.TagCreationDate = DateTime.Now;
                 Tag selectedTag = (Tag)this.cmBxTagName.SelectedItem;
                 tagValue.TagId = selectedTag.TagId;
-                string tagInputValue = "";
-                if (this.Status.IsVisible)
-                {
-                    Status status = (Status)this.cmBxStatus.SelectedItem;
-                    tagInputValue = status.Name;
-                }
-                else if (this.Position.IsVisible)
-                {
-                    tagInputValue = this.txtBxPosition.Text;
-                }
-                else if (this.Orientation.IsVisible)
-                {
-                    tagInputValue = this.txtBxOrientation.Text;
-                }
-                else if (this.Speed.IsVisible)
-                {
-                    tagInputValue = this.txtBxSpeedValue.Text;
-                }
-                tagValue.TagValue = tagInputValue;
+                
+                tagValue.TagValue = this.textTagVal.Text;
 
                 ServiceRepository.AddTagValue(tagValue);
 
                 this.cmBxResourceName.SelectedIndex = 0;
                 this.cmBxTagName.SelectedIndex = 0;
-                this.cmBxStatus.SelectedIndex = 0;
-                this.txtBxSpeedValue.Text = String.Empty;
-                this.txtBxPosition.Text = String.Empty;
-                this.txtBxOrientation.Text = String.Empty;
+                this.textTagVal.Text = String.Empty;
+                this.labelTagName.Content = String.Empty;
             }
             catch(Exception ex)
             {
@@ -116,47 +77,20 @@ namespace RM_K_WIN_APP
         {
             ResourceModel selectedResource = (ResourceModel)this.cmBxResourceName.SelectedItem;
             List<Tag> tagList = ServiceRepository.GetTagDetails(selectedResource.ResourceId);
+            tagList = tagList.GroupBy(p => p.TagId).Select(g => g.First()).ToList();
             this.cmBxTagName.ItemsSource = tagList;
             if (tagList.Count > 0)
                 this.cmBxTagName.SelectedItem = tagList[0];
-
-            this.cmBxStatus.SelectedIndex = 0;
         }
 
         private void cmBxTagName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(this.cmBxTagName.SelectedIndex > 0)
             {
+                this.tagValueUOM.Visibility = Visibility.Visible;
                 Tag selectedTag = (Tag)cmBxTagName.SelectedItem;
-                if (selectedTag.TagName.Contains("Status"))
-                {
-                    this.cmBxStatus.ItemsSource = ServiceRepository.GetStatusList();
-                    this.Status.Visibility = Visibility.Visible;
-                    this.Position.Visibility = Visibility.Collapsed;
-                    this.Orientation.Visibility = Visibility.Collapsed;
-                    this.Speed.Visibility = Visibility.Collapsed;
-                }
-                else if (selectedTag.TagName.Contains("Position"))
-                {
-                    this.Position.Visibility = Visibility.Visible;
-                    this.Status.Visibility = Visibility.Collapsed;
-                    this.Orientation.Visibility = Visibility.Collapsed;
-                    this.Speed.Visibility = Visibility.Collapsed;
-                }
-                else if (selectedTag.TagName.Contains("Orientation"))
-                {
-                    this.Orientation.Visibility = Visibility.Visible;
-                    this.Status.Visibility = Visibility.Collapsed;
-                    this.Position.Visibility = Visibility.Collapsed;
-                    this.Speed.Visibility = Visibility.Collapsed;
-                }
-                else if (selectedTag.TagName.Contains("Speed"))
-                {
-                    this.Speed.Visibility = Visibility.Visible;
-                    this.Status.Visibility = Visibility.Collapsed;
-                    this.Position.Visibility = Visibility.Collapsed;
-                    this.Orientation.Visibility = Visibility.Collapsed;
-                }
+                this.tagValueUOM.Content = selectedTag.TagUOM;
+                this.TagValuePanel.Visibility = Visibility.Visible;                            
             }
         }
 
