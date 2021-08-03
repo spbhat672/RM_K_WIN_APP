@@ -119,11 +119,12 @@ namespace RM_K_WIN_APP
                 {
                     ExcelTagInput excelTag = new ExcelTagInput();
                     excelTag.ResourceId = Convert.ToInt64(xlRange.Cells[i, j].Value);
-                    excelTag.TagId = Convert.ToInt64(xlRange[i, j + 1].Value);
-                    excelTag.TagName = Convert.ToString(xlRange[i, j + 2].Value);
-                    excelTag.TagValue = Convert.ToString(xlRange[i, j + 3].Value);
-                    excelTag.TagUOM = Convert.ToString(xlRange.Cells[i, j + 4].Value);
-                    excelTag.TagCreationDate = Convert.ToDateTime(xlRange[i, j + 5].Value);
+                    excelTag.ResourceName = Convert.ToString(xlRange.Cells[i, j + 1]);
+                    excelTag.TagId = Convert.ToInt64(xlRange[i, j + 2].Value);
+                    excelTag.TagName = Convert.ToString(xlRange[i, j + 3].Value);
+                    excelTag.TagValue = Convert.ToString(xlRange[i, j + 4].Value);
+                    excelTag.TagUOM = Convert.ToString(xlRange.Cells[i, j + 5].Value);
+                    excelTag.TagCreationDate = Convert.ToDateTime(xlRange[i, j + 6].Value);
                     inputValues.Add(excelTag);
                 }
 

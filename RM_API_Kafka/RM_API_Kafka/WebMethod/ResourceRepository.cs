@@ -398,7 +398,7 @@ namespace RM_API_Kafka.WebMethod
                         cmd.ExecuteNonQuery();
                     }
 
-                    string jsonPayload = ModelDataConversion.AddExcelImportAsResponse(ipList);
+                    string jsonPayload = ModelDataConversion.AddExcelImportAsResponse(filteredIp);
                     KafkaService.PostExcelResource(jsonPayload);
                 }
                 con.Close();
