@@ -15,6 +15,8 @@ namespace RM_K_WIN_APP.Models
         public string TagName { get; set; }
         public string TagValue { get; set; }
         public DateTime TagCreationDate { get; set; }
+        public string TypeName { get; set; }
+        public int TypeId { get; set; }
 
         public static ExcelTagInput FromCsv(string csvLine)
         {
@@ -26,6 +28,8 @@ namespace RM_K_WIN_APP.Models
             tagInputValues.TagName = Convert.ToString(values[3]);
             tagInputValues.TagValue = Convert.ToString(values[4]);
             tagInputValues.TagCreationDate = Convert.ToDateTime(values[5]);
+            tagInputValues.TypeName = Convert.ToString(values[6]);
+            tagInputValues.TypeId = Convert.ToInt32(values[7]);
             return tagInputValues;
         }
     }

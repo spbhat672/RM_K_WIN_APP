@@ -370,15 +370,21 @@ namespace RM_API_Kafka.WebMethod
                         var res = cmd.ExecuteScalar();
                         if (((int)res) == 1)
                         {                            
-                            alreadyRegisteredResource += "-(Id:-" + tag.ResourceId + ",Tag:-" + tag.TagId + ")";
+                            alreadyRegisteredResource += "-(Id:-" + tag.ResourceId + ",Tag:-" + tag.TagId + ")";                            
                         }
                         else
+                        {
+                            cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) " +
+                        "Values(" + tag.TagId + ",'" + tag.TagName + "','" + tag.TagValue + "','" + tag.TagUOM +
+                        "','" + tag.TagCreationDate + "'," + tag.ResourceId + ")";
+                            cmd.ExecuteNonQuery();
                             filteredIp.Add(tag);
+                        }
                     }
 
                     List<ExcelTagInput> ipList = new List<ExcelTagInput>();
 
-                    foreach (ExcelTagInput tag in filteredIp)
+                    foreach (ExcelTagInput tag in resourceTag)
                     {
                         cmd.CommandText = "Select COUNT(*) as Number from [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable] where ResourceId = " + tag.ResourceId + " AND TagId = " + tag.TagId + "";
                         var res = cmd.ExecuteScalar();
@@ -387,16 +393,21 @@ namespace RM_API_Kafka.WebMethod
                             ipList.Add(tag);                            
                         }
                         else
-                            continue;
+                        {
+                            cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[ResourceAndTagRegistrationTable](TypeName,TypeId,TagName,ResourceId,ResourceName) " +
+                        "Values('" + tag.TypeName + "'," + tag.TypeId + ",'" + tag.TagName + "'," + tag.ResourceId +
+                        ",'" + tag.ResourceName + "')";
+                            cmd.ExecuteNonQuery();
+                        }
                     }
 
-                    foreach (ExcelTagInput tag in ipList)
-                    {
-                        cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) " +
-                        "Values(" + tag.TagId + ",'" + tag.TagName + "','" + tag.TagValue + "','" + tag.TagUOM +
-                        "','" + tag.TagCreationDate + "'," + tag.ResourceId + ")";
-                        cmd.ExecuteNonQuery();
-                    }
+                    //foreach (ExcelTagInput tag in ipList)
+                    //{
+                    //    cmd.CommandText = "Insert into [RM_K_DB_V2.1].[dbo].[TagTable](Id,Name,Value,UOM,CreationDate,ResourceId) " +
+                    //    "Values(" + tag.TagId + ",'" + tag.TagName + "','" + tag.TagValue + "','" + tag.TagUOM +
+                    //    "','" + tag.TagCreationDate + "'," + tag.ResourceId + ")";
+                    //    cmd.ExecuteNonQuery();
+                    //}
 
                     string jsonPayload = ModelDataConversion.AddExcelImportAsResponse(filteredIp);
                     KafkaService.PostExcelResource(jsonPayload);

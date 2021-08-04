@@ -125,6 +125,8 @@ namespace RM_K_WIN_APP
                     excelTag.TagValue = Convert.ToString(xlRange[i, j + 4].Value);
                     excelTag.TagUOM = Convert.ToString(xlRange.Cells[i, j + 5].Value);
                     excelTag.TagCreationDate = Convert.ToDateTime(xlRange[i, j + 6].Value);
+                    excelTag.TypeName = Convert.ToString(xlRange[i, j + 7].Value);
+                    excelTag.TypeId = Convert.ToInt32(xlRange[i, j + 8].Value);
                     inputValues.Add(excelTag);
                 }
 

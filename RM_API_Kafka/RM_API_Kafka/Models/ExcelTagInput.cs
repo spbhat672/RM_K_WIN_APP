@@ -13,5 +13,8 @@ namespace RM_API_Kafka.Models
         public string TagName { get; set; }
         public string TagValue { get; set; }
         public DateTime TagCreationDate { get; set; }
+        public string TypeName { get; set; }
+        public int TypeId { get; set; }
+        public string ResourceName { get; set; }
     }
 }
