@@ -582,3 +582,4 @@ D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.cspr
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.csproj.CopyComplete
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.dll
 D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.pdb
+D:\3DS\Work\RM_K_3DXP_INTG\RM_API_Kafka\RM_API_Kafka\obj\Debug\RM_API_Kafka.csprojAssemblyReference.cache

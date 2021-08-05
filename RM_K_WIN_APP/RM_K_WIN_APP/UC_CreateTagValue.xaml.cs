@@ -65,7 +65,7 @@ namespace RM_K_WIN_APP
                 this.cmBxResourceName.SelectedIndex = 0;
                 this.cmBxTagName.SelectedIndex = 0;
                 this.textTagVal.Text = String.Empty;
-                this.labelTagName.Content = String.Empty;
+                //this.labelTagName.Content = String.Empty;
             }
             catch(Exception ex)
             {

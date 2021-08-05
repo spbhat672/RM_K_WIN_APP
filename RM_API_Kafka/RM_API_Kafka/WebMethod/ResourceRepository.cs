@@ -29,11 +29,11 @@ namespace RM_API_Kafka.WebMethod
                     {
                         string value = "(tag.ResourceId = " + extReourceId + " ";
                         if (!String.IsNullOrEmpty(tagItem.tagId) && !String.IsNullOrEmpty(tagItem.name))
-                            value += " AND tag.Id = " + tagItem.tagId + " AND reg.TagName = '" + tagItem.name + "' ";
+                            value += " AND tag.Id = " + tagItem.tagId + " AND tag.Name = '" + tagItem.name + "' ";
                         else if (!String.IsNullOrEmpty(tagItem.tagId) && String.IsNullOrEmpty(tagItem.name))
                             value += " AND tag.Id = " + tagItem.tagId + " ";
                         else if (String.IsNullOrEmpty(tagItem.tagId) && !String.IsNullOrEmpty(tagItem.name))
-                            value += " AND reg.TagName = '" + tagItem.name + "' ";
+                            value += " AND tag.Name = '" + tagItem.name + "' ";
                         value += ")";
                         filterValue.Add(value);
                     }
@@ -51,9 +51,11 @@ namespace RM_API_Kafka.WebMethod
                 {
                     cmd.Connection = con;
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = @"select tag.ResourceId as ResourceId, reg.TypeName as Type, tag.Name as Name ,reg.TagUOM as UOM,
-                                        tag.Value as Value,tag.CreationDate as Date from
-                                        TagTable as tag Left Join ResourceAndTagRegistrationTable as reg ON
+                    cmd.CommandText = @"select tag.ResourceId as ResourceId, res.Type as Type, tag.Name as Name ,tag.UOM as UOM,
+                                        tag.Value as Value,tag.CreationDate as Date,tag.Id as TagId,tag.Name as TagName from
+										ResourceTable as res LEFT JOIN
+                                        TagTable as tag ON res.Id = tag.ResourceId
+										Left Join ResourceAndTagRegistrationTable as reg ON
                                         reg.TagId = tag.Id" + filter;
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
