@@ -148,18 +148,8 @@ namespace RM_API_Kafka.WebMethod
                 int subItemCount = resList.Count();
                 foreach (var subItem in resList)
                 {
-                    if (subItem.TagName == "Status")
-                    {
-                        jsonStr2 += @"*" + subItem.TagName + "*: {*value*: *" + subItem.TagValue + "*}" + Environment.NewLine;
-                    }
-                    else if (subItem.TagName == "Speed")
-                    {
-                        jsonStr2 += @"*" + subItem.TagName + "*: {*value*: " + subItem.TagValue + ", *uom*: *" + subItem.TagUOM + "*}" + Environment.NewLine;
-                    }
-                    else
-                    {
-                        jsonStr2 += @"*" + subItem.TagName + "*: {*value*: [" + subItem.TagValue + "], *uom*: *" + subItem.TagUOM + "*}" + Environment.NewLine;
-                    }
+
+                    jsonStr2 += @"*" + subItem.TagName + "*: {*value*: " + subItem.TagValue + ", *uom*: *" + subItem.TagUOM + "*}" + Environment.NewLine;
                     jsonStr2 += (subItemIteration < subItemCount) ? ("," + Environment.NewLine) : String.Empty;
                     subItemCount++;
                 }

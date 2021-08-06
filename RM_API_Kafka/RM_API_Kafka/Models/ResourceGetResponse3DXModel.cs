@@ -37,42 +37,15 @@ namespace RM_API_Kafka.Models
             public string id { get; set; }
             [JsonConverter(typeof(DateFormatConverter), "yyyy-MM-dd HH:mm:ss")]
             public DateTime updateDataDate { get; set; }
-            public Tags tags { get; set; }
+            public Tags[] tags { get; set; }
         }
 
         public class Tags
         {
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-            public PositionObj Position { get; set; }
+            public string value { get; set; }
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-            public OrientationObj Orientation { get; set; }
-            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-            public SpeedObj Speed { get; set; }
-            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-            public StatusObj Status { get; set; }
-        }
-
-        public class PositionObj
-        {
-            public string value { get; set; }
             public string uom { get; set; }
-        }
-
-        public class OrientationObj
-        {
-            public string value { get; set; }
-            public string uom { get; set; }
-        }
-
-        public class SpeedObj
-        {
-            public string value { get; set; }
-            public string uom { get; set; }
-        }
-
-        public class StatusObj
-        {
-            public string value { get; set; }
         }
     }
 }
