@@ -1,0 +1,15 @@
+﻿.table {
+    display: table; /* Allow the centering to work */
+    margin: 0 auto;
+    background-color: red;
+}
+
+ul#horizontal-list {
+    min-width: 696px;
+    list-style: none;
+    padding-top: 20px;
+}
+
+    ul#horizontal-list li {
+        display: inline;
+    }

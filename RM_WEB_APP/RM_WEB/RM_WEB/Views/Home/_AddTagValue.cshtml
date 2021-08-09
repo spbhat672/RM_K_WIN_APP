@@ -1,0 +1,33 @@
+﻿<html>
+<body>
+    <div class="pageOutline">
+        <form id="AddTagValue" method="post">
+            <table style="border-collapse: separate; border-spacing: 3px 10px;">
+                <tr>
+                    <td><label>Resource Name</label></td>
+                    @*<td><select style="width:250px;height:35px"></select></td>*@
+                    <td>@Html.DropDownList("ResLst", ViewData["ResLst"] as IEnumerable<SelectListItem>)</td>
+                </tr>
+                <tr>
+                    <td><label>Tag Name</label></td>
+                    @*<td><select style="width:250px;height:35px"></select></td>*@
+                    <td>@Html.DropDownList("TagLst", ViewData["TagLst"] as IEnumerable<SelectListItem>)</td>
+                </tr>
+                <tr>
+                    <td><label>Tag Value</label></td>
+                    <td><input type="text" style="width:250px;height:35px" /></td>
+                </tr>
+            </table>
+            <input type="submit" style="width:100px;height:35px;background-color:cadetblue;margin-left:150px;margin-top:10px" value="Submit Value" onclick="location.href='@Url.Action("Index", "Home")'" />
+        </form>
+    </div>
+
+    <script>
+        function myFunction() {
+            alert("The form was submitted");
+        }
+    </script>
+</body>
+</html>
+
+<javascript></javascript>

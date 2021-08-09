@@ -1,0 +1,24 @@
+﻿<html>
+<body>
+    <div class="pageOutline">
+        <form id="CreateTags">
+            <table style="border-collapse: separate; border-spacing: 3px 10px;">
+                <tr>
+                    <td><label>Resource</label></td>
+                    <td>@Html.DropDownList("ResLst", ViewData["ResLst"] as IEnumerable<SelectListItem>)</td>
+                </tr>
+                <tr>
+                    <td><label>Tag Name</label></td>
+                    <td>@Html.DropDownList("TagLst", ViewData["TagLst"] as IEnumerable<SelectListItem>)</td>
+                </tr>
+                <tr>
+                    <td><label>Tag UOM</label></td>
+                    <td><input type="text" style="width:250px;height:35px" /></td>
+                </tr>
+            </table>
+            <input type="button" style="width:100px;height:35px;background-color:cadetblue;margin-left:150px;margin-top:10px" value="Add Tag" onclick="location.href='@Url.Action("Index", "Home")'" />
+
+        </form>    
+    </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+﻿@using (Html.BeginForm())
+{
+    <div class="pageOutline">
+        <form id="CreateResource" method="post">
+            <table style="border-collapse: separate; border-spacing: 3px 10px;">
+                <tr>
+                    <td><label>Type Name</label></td>
+                    <td>@Html.DropDownList("ResType", ViewData["ResType"] as IEnumerable<SelectListItem>)</td>
+                </tr>
+                <tr>
+                    <td><label>Resource ID</label></td>
+                    <td><input name="shambo" type="text" style="width:250px;height:35px" /></td>
+                </tr>
+                <tr>
+                    <td><label>Resource Name</label></td>
+                    <td><input name="lalala" type="text" style="width:250px;height:35px" /></td>
+                </tr>
+            </table>
+            <input type="submit" value="Create" style="width:100px;height:35px;background-color:cadetblue;margin-left:150px;margin-top:10px" onclick="location.href='@Url.Action("Index", "Home")'" />
+        </form>
+    </div>
+}

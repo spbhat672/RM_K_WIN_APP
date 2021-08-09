@@ -1,0 +1,43 @@
+﻿<html>
+<body>
+    <div class="pageOutline">
+        <form id="CreateSystemTagType">
+            <table style="border-collapse: separate; border-spacing: 3px 10px;">
+                <tr>
+                    <td><label>Tag Name</label></td>
+                    <td><input type="text" id="name" name="name" style="width:250px;height:35px" /></td>
+                </tr>
+                <tr>
+                    <td><label>Tag UOM</label></td>
+                    <td><input type="text" id="uom" name="uom" style="width:250px;height:35px" /></td>
+                </tr>
+            </table>
+            <input type="submit" id="myB" name="myB" style="width:100px;height:35px;background-color:cadetblue;margin-left:150px;margin-top:10px" value="Add Tag Name" onclick="location.href='@Url.Action("Index", "Home")'" />
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#myB").click(function () {
+                var model = { Name: $('.name').val(), UOM: $('.uom').val() };
+                $.ajax({
+                    type: "POST",
+                    url: "https://localhost:44361/ResourceInfo/api/PostTagName/",
+                    data: model,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        alert("Hello: " + response.Name + ".\nCurrent Date and Time: " + response.DateTime);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
