@@ -6,7 +6,7 @@
                 <tr>
                     <td><label>Resource Name</label></td>
                     @*<td><select style="width:250px;height:35px"></select></td>*@
-                    <td>@Html.DropDownList("ResLst", ViewData["ResLst"] as IEnumerable<SelectListItem>)</td>
+                    <td>@Html.DropDownList("ResLst", ViewData["ResLst"] as IEnumerable<SelectListItem>, new{ @onchange = "callChangefunc(this.value)"})</td>
                 </tr>
                 <tr>
                     <td><label>Tag Name</label></td>
@@ -23,8 +23,11 @@
     </div>
 
     <script>
-        function myFunction() {
-            alert("The form was submitted");
+          function callChangefunc(val) {
+              window.location.href = "/Home/FilterTagCB?value=" + val;
+              //$(document).ready(() => {
+              //    $("#ResLst").val(val);
+              //}); 
         }
     </script>
 </body>
